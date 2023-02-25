@@ -13,8 +13,18 @@ const statistics = {
     }
     
 const options = { header: true }
-    
-fs.createReadStream("t1.csv")
+
+const delay = ms => new Promise(res => setTimeout(res, ms))
+
+var server = app.listen(8080, () => {
+    var host = server.address().address
+    var port = server.address().port
+    console.log("REST API listening at http://%s:%s", host, port)
+    })
+
+async function UpdateData() {
+        
+    fs.createReadStream("t1.csv")
     .pipe(Papa.parse(Papa.NODE_STREAM_INPUT, options))
     .on("data", (data) => {
         // console.log(data)
@@ -27,13 +37,12 @@ fs.createReadStream("t1.csv")
         console.log(statistics)
     })
 
-app.get('/getData', (req, res) => {
-    
+    app.get('/getData', (req, res) => {
     res.end(JSON.stringify(statistics))
-})
+    })
 
-var server = app.listen(8080, () => {
-    var host = server.address().address
-    var port = server.address().port
-    console.log("REST API listening at http://%s:%s", host, port)
-})
+    await delay(1000)
+    UpdateData()
+}
+
+UpdateData()
