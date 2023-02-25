@@ -6,6 +6,7 @@ import ChartT1 from './components/ChartT1';
 import UserAccSettings from './components/UserAccSettings';
 import { TestData } from './Data/Data';
 import { useState } from 'react';
+// import ExpoData from './papaparse_t1/index';
 
 function App() {
 
@@ -16,6 +17,14 @@ function App() {
       data: TestData.map((data) => data.value)
     }]
   })
+
+  // const [testData, setTestData] = useState({
+  //   label: ExpoData.map((data) => data.timestamp),
+  //   datasets: [{
+  //     label: "CPU Usage",
+  //     data: ExpoData.map((data) => data.cpu_usage)
+  //   }]
+  // })
 
   return (
     <div className="App">
