@@ -5,6 +5,11 @@ const Papa = require('papaparse')
 const express = require('express')
 const app = express()
 
+var directory_string = "../ServerMonitoringData"
+const length = fs.readdirSync(directory_string).length
+directory_string = `./${directory_string}/${length}/t1.csv`
+
+
 const statistics = {
         timestamp: [],
         cpu_usage: [],
@@ -17,14 +22,13 @@ const options = { header: true }
 const delay = ms => new Promise(res => setTimeout(res, ms))
 
 var server = app.listen(8080, () => {
-    var host = server.address().address
     var port = server.address().port
-    console.log("REST API listening at http://%s:%s", host, port)
+    console.log(`listening on port: ${port}`)
     })
 
 async function UpdateData() {
         
-    fs.createReadStream("t1.csv")
+    fs.createReadStream(directory_string)
     .pipe(Papa.parse(Papa.NODE_STREAM_INPUT, options))
     .on("data", (data) => {
         // console.log(data)
