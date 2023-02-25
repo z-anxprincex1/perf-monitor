@@ -12,7 +12,7 @@ export default function LeftPane() {
         <div className="pane-container">
             {showPane && <div className="pane">
                 <a href="/">Performance Overview</a>
-                <a href="p1">Alert Logs</a>
+                <a href="chartt1">Alert Logs</a>
                 <a href="uac-settings">User Account Settings</a>
             </div>}
             <button className="pane-btn" onClick={HandlePaneBtn}><strong>|||</strong></button>
