@@ -1,3 +1,5 @@
+// import { data_start as start, data_end as end } from './data_param_size'
+
 const fs = require("fs")
 const Papa = require("papaparse")
 const express = require("express")
@@ -5,7 +7,8 @@ const app = express()
 
 var directory_string = "../ServerMonitoringData"
 const length = fs.readdirSync(directory_string).length
-directory_string = `./${directory_string}/${length}/t1.csv`
+// directory_string = `./${directory_string}/${length}/t1.csv`
+directory_string  = `./${directory_string}/t1.csv`
 
 
 const statistics = {
@@ -23,20 +26,14 @@ var server = app.listen(8080, () => {
     })
 
 const GetPromisedData = (ms) => new Promise((resolve) => {
-    if (statistics.cpu_usage.length === 0) {
-        resolve(ms);
-    }
+    setTimeout(GetData(), ms)
 })
 
 async function GetData() {
-    fs.createReadStream(directory_string)
+    await fs.createReadStream(directory_string)
     .pipe(Papa.parse(Papa.NODE_STREAM_INPUT, options))
     .on("data", (data) => {
-        // console.log(data)
-        statistics.timestamp.push(data["(PDH-CSV 4.0) (India Standard Time)(-330)"].slice(statistics.timestamp.length, data["(PDH-CSV 4.0) (India Standard Time)(-330)"].length).substring(11, data["(PDH-CSV 4.0) (India Standard Time)(-330)"].length))
-        statistics.cpu_usage.push(data["\\\\Z_ANXX1_HPPAVX1\\Processor Information(_Total)\\% Processor Time"].slice(statistics.cpu_usage.length, data["\\\\Z_ANXX1_HPPAVX1\\Processor Information(_Total)\\% Processor Time"].length))
-        statistics.ram_perc.push(data["\\\\Z_ANXX1_HPPAVX1\\Memory\\% Committed Bytes In Use"].slice(statistics.ram_perc.length, data["\\\\Z_ANXX1_HPPAVX1\\Memory\\% Committed Bytes In Use"].length))
-        statistics.ram_avail.push(data["\\\\Z_ANXX1_HPPAVX1\\Memory\\Available MBytes"].slice(statistics.ram_avail.length, data["\\\\Z_ANXX1_HPPAVX1\\Memory\\Available MBytes"].length))
+        console.log(data['(PDH-CSV 4.0) (India Standard Time)(-330)'])
     })
     .on("end", () => {
         console.log(statistics)
@@ -46,11 +43,9 @@ async function GetData() {
         res.end(JSON.stringify(statistics))
     })
 
-    await GetPromisedData(1000)
+    await GetPromisedData(2000)
 }
 
-GetPromisedData
-    .then((ms)=>{
-        setTimeout(GetData, ms)
-    })
-    .catch((err) => {console.log(err)})
+console.log(`updating from directory: ${directory_string}`)
+
+GetData()

@@ -6,6 +6,7 @@ import ChartT1 from './components/ChartT1';
 import UserAccSettings from './components/UserAccSettings';
 import { TestData } from './Data/Data';
 import { useState } from 'react';
+import { useEffect } from 'react';
 // import ExpoData from './papaparse_t1/index';
 
 function App() {

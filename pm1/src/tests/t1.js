@@ -1,20 +1,2 @@
-const name = "Anand"
-
-const NewPromise = new Promise((res, rej) => {
-    if (name === "Anand") {
-        res();
-    } else {
-        rej();
-    }
-})
-
-NewPromise
-    .then((res) => {
-        console.log(name)
-    })
-    .catch((res) => {
-        console.log("err")
-    })
-    .finally(() => {
-        console.log("the conclusion")
-    })
+const t_array = [1, 2, 3, 4]
+console.log(t_array.slice(0, 3))
